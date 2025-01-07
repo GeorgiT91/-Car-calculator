@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Calculator</title>
+</head>
+<body>
+    <h1>Welcome to GT Cars Calculator</h1>
+    <p>Use this tool to calculate the total price of your car, including shipping, taxes, and fees.</p>
+    <!-- Реалният калкулатор ще бъде добавен тук по-късно -->
+</body>
+</html>
