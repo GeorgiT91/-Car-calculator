@@ -1,13 +1,147 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Price Calculator</title>
+    <title>Интерактивен калкулатор за внос на автомобили</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #4c6ef5, #d6336c);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, button, select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+        }
+        input[type="number"], input[type="range"] {
+            background: #222;
+            color: #fff;
+        }
+        button {
+            background: #37b24d;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #2f9e44;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(55, 178, 77, 0.8);
+            border-radius: 10px;
+            display: none;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .footer a {
+            color: #ffd43b;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to GT Cars Calculator</h1>
-    <p>Use this tool to calculate the total price of your car, including shipping, taxes, and fees.</p>
-    <!-- Реалният калкулатор ще бъде добавен тук по-късно -->
+<h1 style='text-align:center; font-family:Arial, sans-serif;'>Калкулатор за внос на автомобили от САЩ <br><span style='font-size:16px; font-weight:normal;'>(цените са приблизителни)</span></h1><br>
+    <h1>Интерактивен калкулатор за внос на автомобили</h1>
+    <div class="container">
+        <div class="form-group">
+            <label for="carPrice">Цена на автомобила ($): <span id="carPriceValue">5000</span></label>
+            <input type="range" id="carPrice" min="1000" max="50000" step="500" value="5000" oninput="updatePriceValue()">
+        </div>
+        <div class="form-group">
+            <label for="internalTransport">Вътрешен транспорт ($):</label>
+            <input type="number" id="internalTransport" placeholder="Въведете разход за вътрешен транспорт">
+            <small style="color: #ddd;">* В зависимост от разстоянието до най-близкото пристанище.</small>
+        </div>
+        <div class="form-group">
+            <label for="coastSelection">Изберете транспорт до Европа:</label>
+            <select id="coastSelection">
+                <option value="1600">Източно крайбрежие ($1600)</option>
+                <option value="2000">Западно крайбрежие ($2000)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="usdToBgn">Курс на долара (USD към BGN):</label>
+            <input type="number" id="usdToBgn" placeholder="Въведете актуалния курс на долара">
+        </div>
+        <div class="form-group">
+            <label>Фиксирана комисионна: €500</label>
+        </div>
+        <div class="form-group">
+            <label>Такса за търга (% от стойността на автомобила): <span id="auctionFee">$750</span></label>
+        </div>
+        <div class="form-group">
+            <label>Мито, ДДС и транспорт до България: <span id="fixedCosts">€2500</span></label>
+        </div>
+        <button onclick="calculateTotal()">Изчисли общата цена в лева</button>
+        <div id="result"></div>
+    </div>
+    <div class="footer">
+        <p>Споделете този калкулатор: <a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="#">TikTok</a></p>
+    </div>
+
+    <script>
+        const euroToBGN = 1.95;
+
+        function updatePriceValue() {
+            const carPrice = document.getElementById('carPrice').value;
+            document.getElementById('carPriceValue').innerText = carPrice;
+
+            // Актуализиране на таксата за търга
+            const auctionFee = carPrice * 0.19;
+            document.getElementById('auctionFee').innerText = `$${auctionFee.toFixed(2)}`;
+
+            // Актуализиране на фиксираните разходи
+            const fixedCostsInEuro = carPrice <= 6500 ? 2500 : 3000;
+            document.getElementById('fixedCosts').innerText = `€${fixedCostsInEuro}`;
+        }
+
+        function calculateTotal() {
+            const carPrice = parseFloat(document.getElementById('carPrice').value) || 0;
+            const internalTransport = parseFloat(document.getElementById('internalTransport').value) || 0;
+            const coastTransport = parseFloat(document.getElementById('coastSelection').value) || 0;
+            const usdToBgn = parseFloat(document.getElementById('usdToBgn').value) || 1.8; // По подразбиране курс
+            const auctionFee = carPrice * 0.19;
+            const commissionInBGN = 500 * euroToBGN;
+
+            // Изчисляване на фиксираните разходи в зависимост от цената на автомобила
+            const fixedCostsInEuro = carPrice <= 6500 ? 2500 : 3000;
+            const fixedCostsInBGN = fixedCostsInEuro * euroToBGN;
+
+            const totalInBGN = (carPrice + internalTransport + coastTransport + auctionFee) * usdToBgn + fixedCostsInBGN + commissionInBGN;
+
+            document.getElementById('result').innerHTML = `<h3>Обща цена: ${totalInBGN.toFixed(2)} лв.</h3>`;
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
