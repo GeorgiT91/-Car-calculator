@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> калкулатор за внос на автомобили</title>
+    <title> Калкулатор за внос на автомобили</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -120,7 +120,14 @@
             document.getElementById('auctionFee').innerText = `$${auctionFee.toFixed(2)}`;
 
             // Актуализиране на фиксираните разходи
-            const fixedCostsInEuro = carPrice <= 6500 ? 2500 : 3000;
+            let fixedCostsInEuro;
+            if (carPrice <= 7000) {
+                fixedCostsInEuro = 2500;
+            } else if (carPrice <= 11900) {
+                fixedCostsInEuro = 3000;
+            } else {
+                fixedCostsInEuro = 3500;
+            }
             document.getElementById('fixedCosts').innerText = `€${fixedCostsInEuro}`;
         }
 
@@ -128,19 +135,4 @@
             const carPrice = parseFloat(document.getElementById('carPrice').value) || 0;
             const internalTransport = parseFloat(document.getElementById('internalTransport').value) || 0;
             const coastTransport = parseFloat(document.getElementById('coastSelection').value) || 0;
-            const usdToBgn = parseFloat(document.getElementById('usdToBgn').value) || 1.8; // По подразбиране курс
-            const auctionFee = carPrice * 0.19;
-            const commissionInBGN = 500 * euroToBGN;
-
-            // Изчисляване на фиксираните разходи в зависимост от цената на автомобила
-            const fixedCostsInEuro = carPrice <= 6500 ? 2500 : 3000;
-            const fixedCostsInBGN = fixedCostsInEuro * euroToBGN;
-
-            const totalInBGN = (carPrice + internalTransport + coastTransport + auctionFee) * usdToBgn + fixedCostsInBGN + commissionInBGN;
-
-            document.getElementById('result').innerHTML = `<h3>Обща цена: ${totalInBGN.toFixed(2)} лв.</h3>`;
-            document.getElementById('result').style.display = 'block';
-        }
-    </script>
-</body>
-</html>
+            const usdToBgn = parseFloat(document.getElementById('usdToBgn').value) || 1.8; 
