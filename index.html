@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bg">
 <head>
@@ -135,4 +134,27 @@
             const carPrice = parseFloat(document.getElementById('carPrice').value) || 0;
             const internalTransport = parseFloat(document.getElementById('internalTransport').value) || 0;
             const coastTransport = parseFloat(document.getElementById('coastSelection').value) || 0;
-            const usdToBgn = parseFloat(document.getElementById('usdToBgn').value) || 1.8; 
+            const usdToBgn = parseFloat(document.getElementById('usdToBgn').value) || 1.8; // По подразбиране курс
+            const auctionFee = carPrice * 0.19;
+            const commissionInBGN = 500 * euroToBGN;
+
+            // Изчисляване на фиксираните разходи в зависимост от цената на автомобила
+            let fixedCostsInEuro;
+            if (carPrice <= 7000) {
+                fixedCostsInEuro = 2500;
+            } else if (carPrice <= 11900) {
+                fixedCostsInEuro = 3000;
+            } else {
+                fixedCostsInEuro = 3500;  // Това е за автомобили над 12 000 долара
+            }
+
+            const fixedCostsInBGN = fixedCostsInEuro * euroToBGN;
+
+            const totalInBGN = (carPrice + internalTransport + coastTransport + auctionFee) * usdToBgn + fixedCostsInBGN + commissionInBGN;
+
+            document.getElementById('result').innerHTML = `<h3>Обща цена: ${totalInBGN.toFixed(2)} лв.</h3>`;
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
